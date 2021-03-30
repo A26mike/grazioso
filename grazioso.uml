@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="478.0" y="766.0">Monkey</node>
+    <node x="12.0" y="385.71428571428567">Driver</node>
+    <node x="355.75" y="0.0">RescueAnimal</node>
+    <node x="-62.85714285714289" y="805.1428571428572">Dog</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Dog" target="RescueAnimal">
+      <point x="0.0" y="-61.0" />
+      <point x="229.0" y="741.0" />
+      <point x="414.5" y="741.0" />
+      <point x="-58.75" y="358.0" />
+    </edge>
+    <edge source="Monkey" target="RescueAnimal">
+      <point x="0.0" y="-193.0" />
+      <point x="717.5" y="741.0" />
+      <point x="532.0" y="741.0" />
+      <point x="58.75" y="358.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7000000000000001" x="196.6428571428571" y="588.5714285714286" />
+  <SelectedNodes>
+    <node>Dog</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Constructors</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
