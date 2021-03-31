@@ -24,35 +24,14 @@ public class Monkey extends RescueAnimal{
     // Does this need to be a field
     private ArrayList<Monkey> eligibleSpecies = new ArrayList<>();
 
-    /*
-    private String name;
-    private String animalType;
-    private String gender;
-    private String age;
-    private String weight;
-    private String acquisitionDate;
-    private String acquisitionCountry;
-    private String trainingStatus;
-    private boolean reserved;
-    private String inServiceCountry;
-    */
-
-    //TODO define better constructor.
-
+    //constructor
     public Monkey(String name, String species, String gender, String age,
                String weight, String acquisitionDate, String acquisitionCountry,
                String trainingStatus, boolean reserved, String inServiceCountry) {
-        setName(name);
+        super(name, gender, age,
+                weight,  acquisitionDate,  acquisitionCountry,
+                trainingStatus,  reserved,  inServiceCountry);
         setSpecies(species);
-        setGender(gender);
-        setAge(age);
-        setWeight(weight);
-        setAcquisitionDate(acquisitionDate);
-        setAcquisitionLocation(acquisitionCountry);
-        setTrainingStatus(trainingStatus);
-        setReserved(reserved);
-        setInServiceCountry(inServiceCountry);
-
     }
 
     //tailLength getter and setter.
@@ -83,7 +62,6 @@ public class Monkey extends RescueAnimal{
     }
 
     //    species getter and setter.
-
     public String getSpecies() {
         return species;
     }

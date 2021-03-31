@@ -1,6 +1,9 @@
 import java.lang.String;
 
-public class RescueAnimal {
+// changed to abstract class
+// cant make an object out of abstract class.
+
+public abstract class RescueAnimal {
 
     // Instance variables
     private String name;
@@ -16,8 +19,20 @@ public class RescueAnimal {
 
 
     // Constructor
-    public RescueAnimal() {
-    }
+    public RescueAnimal(String name, String gender, String age,
+						String weight, String acquisitionDate, String acquisitionCountry,
+						String trainingStatus, boolean reserved, String inServiceCountry) {
+		setName(name);
+		setGender(gender);
+		setAge(age);
+		setWeight(weight);
+		setAcquisitionDate(acquisitionDate);
+		setAcquisitionLocation(acquisitionCountry);
+		setTrainingStatus(trainingStatus);
+		setReserved(reserved);
+		setInServiceCountry(inServiceCountry);
+
+	}
 
 
 	public String getName() {

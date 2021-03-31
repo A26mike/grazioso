@@ -3,21 +3,18 @@ public class Dog extends RescueAnimal {
 
     // Instance variable
     private String breed;
+    private String animalType = "dog";
+
 
     // Constructor
     public Dog(String name, String breed, String gender, String age,
     String weight, String acquisitionDate, String acquisitionCountry,
 	String trainingStatus, boolean reserved, String inServiceCountry) {
-        setName(name);
+        super(name, gender, age,
+                weight,  acquisitionDate,  acquisitionCountry,
+                 trainingStatus,  reserved,  inServiceCountry);
+
         setBreed(breed);
-        setGender(gender);
-        setAge(age);
-        setWeight(weight);
-        setAcquisitionDate(acquisitionDate);
-        setAcquisitionLocation(acquisitionCountry);
-        setTrainingStatus(trainingStatus);
-        setReserved(reserved);
-        setInServiceCountry(inServiceCountry);
 
     }
 
