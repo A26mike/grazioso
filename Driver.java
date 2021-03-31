@@ -11,11 +11,7 @@ public class Driver {
     }
 
 
-
-
-
     public static void main(String[] args) {
-
 
         Scanner scanner = new Scanner(System.in);
         boolean quitApp = true;
@@ -127,11 +123,11 @@ public class Driver {
     };
 
 
-    //TODO Finish fleshing out
+    //TODO Finish fleshing out if a dog or monkey
     public static RescueAnimal intakeNewAnimal(Scanner scanner, AcceptedAnimal acceptedAnimal){
         //shorthand if else statement with ENUM checking if
-        String animalType = (acceptedAnimal == AcceptedAnimal.DOG) ? "dog" : "monkey";
 
+        String animalType = (acceptedAnimal == AcceptedAnimal.DOG) ? "dog" : "monkey";
         String name = Driver.getInput(scanner, "What is your " + animalType + "'s name");
         String gender = Driver.getInput(scanner, "What is your " + animalType + "'s gender\n" +
                 "");
@@ -149,29 +145,22 @@ public class Driver {
             String breed= Driver.getInput(scanner, "What is your " + animalType + "'s breed");
 
             Dog dog = new Dog(name, breed, gender, age, weight, acquisitionDate, acquisitionCountry, trainingStatus, false, inServiceCountry);
+
+            System.out.println("intakeNewAnimal returned dog");
             return dog;
 
 
         }
+
         // monkey
-        else if ((acceptedAnimal == AcceptedAnimal.MONKEY)){
+        else if (acceptedAnimal == AcceptedAnimal.MONKEY){
+            System.out.println("intakeNewAnimal returned Monkey");
+
 
         }
 
-
-
-        /*
-        private boolean reserved;
-        private String inServiceCountry;*/
-
-        //return a rescue animal
-
-        System.out.println("What is the " + animalType +  "'s breed ?");
-        String breed = scanner.nextLine();
-        System.out.println("/n");
-
-        return ;
-
+        System.out.println("Error in method intakeNewAnimal returned null ");
+        return null;
 
     }
 
