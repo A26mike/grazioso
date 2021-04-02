@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Driver {
-    private static final ArrayList<Dog> dogList = new ArrayList<Dog>();
-    private static final ArrayList<Monkey> monkeyList = new ArrayList<Monkey>();
+    private static final ArrayList<Dog> dogList = new ArrayList<>();
+    private static final ArrayList<Monkey> monkeyList = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -14,52 +14,47 @@ public class Driver {
         initializeMonkeyList();
 
         // Main loop
-        while (quitApp != false) {
+        while (quitApp) {
             char userChoice;
             displayMenu();
             userChoice = scanner.next().charAt(0);
-            String clearScanner = scanner.nextLine(); // clearing the scanner input
+            scanner.nextLine(); // Consume newline left-over Do not remove
 
             switch (userChoice) {
                 //quit
                 case 'q':
-                    System.out.println("You entered q ");
+                    System.out.println("\nExiting the program\n");
                     quitApp = false;
                     break;
 
                 // intake new dog
                 case '1':
-                    System.out.println("\nYou entered an 1\n");
                     intakeNewDog(scanner);
                     break;
 
                 //intake new monkey
                 case '2':
-                    System.out.println("You entered an  2");
+                    intakeNewMonkey(scanner);
                     break;
 
-                //Reserve an animal
+                //TODO finish Reserve an animal
                 case '3':
-                    System.out.println("You entered an 3");
                     reserveAnimal(scanner);
                     break;
 
                 //print a list of all dogs
                 case '4':
-                    System.out.println("You entered an 4");
-                    printDogList();
+                    printAnimals(AcceptedAnimal.DOG);
                     break;
 
                 //print a list of all monkeys
                 case '5':
-                    System.out.println("You entered an 5");
-                    printMonkeyList();
+                    printAnimals(AcceptedAnimal.MONKEY);
                     break;
 
-                //Print a list of all animals that are not reserved
+                // Print list of all non- reserved animals
                 case '6':
-                    System.out.println("You entered an 6");
-                    printAnimals();
+                    printAnimals(AcceptedAnimal.AVAILABLE);
                     break;
 
                 default:
@@ -101,6 +96,7 @@ public class Driver {
     }
 
     // method to for printing to keep the code DRY
+    //TODO refactor for <t> generic type method.
     public static String getInput(Scanner scanner, String question) {
         System.out.println(question);
         String input = scanner.nextLine();
@@ -112,7 +108,7 @@ public class Driver {
         System.out.println("\nNew " + animalType + " named " + name + " added successfully\n");
     }
 
-    //TODO Finish fleshing out if a dog or monkey
+    //
     public static RescueAnimal intakeNewAnimal(Scanner scanner, AcceptedAnimal acceptedAnimal, String name) {
         //shorthand if else statement with ENUM.
         //TODO input validation for each input after finishing the rest of the program
@@ -120,7 +116,8 @@ public class Driver {
         String gender = Driver.getInput(scanner, "What is your " + animalType + "'s gender");
         String age = Driver.getInput(scanner, "What is your " + animalType + "'s age");
         String weight = Driver.getInput(scanner, "What is your " + animalType + "'s weight in lbs ");
-        String acquisitionDate = Driver.getInput(scanner, "What date did you acquire the " + animalType + " : enter mm-dd-yyyy\n" +
+        String acquisitionDate = Driver.getInput(scanner, "What date did you acquire the " + animalType +
+                " : enter mm-dd-yyyy\n" +
                 "eg 05-12-2019");
         String acquisitionCountry = Driver.getInput(scanner, "What country did you get the " + animalType);
         // all new new animals start as intake and in the united states and are not reserved
@@ -182,8 +179,6 @@ public class Driver {
         RescueAnimal newDog = intakeNewAnimal(scanner, acceptedAnimal, name);
         // intakeNewAnimal returns a RescueAnimal object, cast to a Dog object
         dogList.add((Dog) newDog);
-        // prints out dog object memory location.
-        System.out.println(dogList.toString());
     }
 
     // Complete intakeNewMonkey
@@ -206,65 +201,110 @@ public class Driver {
         monkeyList.add((Monkey) newMonkey);
     }
 
-    // Complete reserveAnimal
-    // You will need to find the animal by animal type and in service country
+    // TODO Complete reserveAnimal
+    //ask user what type of animal they would like to check out
+    //print out a list of type requested animals
+    //TODO have user enter name of animal
     public static void reserveAnimal(Scanner scanner) {
-        System.out.println("The method reserveAnimal needs to be implemented");
+        String animalType;
+        animalType = getInput(scanner, "Enter what type of animal you would like to reserve\n" +
+                "Enter Dog or Monkey");
 
-    }
+        switch (animalType) {
+            case "Dog":
+                System.out.println("Dog selected");
+                printAnimals(AcceptedAnimal.DOG);
+                break;
 
-    // Complete printAnimals
-    // Include the animal name, status, acquisition country and if the animal is reserved.
-    // Remember that this method connects to three different menu items.
-    // The printAnimals() method has three different outputs
-    // based on the listType parameter
-    // dog - prints the list of dogs
-    // monkey - prints the list of monkeys
-    // available - prints a combined list of all animals that are
-    // fully trained ("in service") but not reserved
-    // Remember that you only have to fully implement ONE of these lists.
-    // The other lists can have a print statement saying "This option needs to be implemented".
-    // To score "exemplary" you must correctly implement the "available" list.
+            case "Monkey":
+                System.out.println("Monkey selected");
+                printAnimals(AcceptedAnimal.DOG);
+                break;
 
-    public static void printDogList() {
-        System.out.println("[4] Print a list of all dogs");
-
-    }
-
-    public static void printMonkeyList() {
-        System.out.println("[5] Print a list of all monkeys");
-
-    }
-
-
-    public static void getNotReserved() {
-
-    }
-
-    public static void printAnimals() {
-
-        //loop through dog array list
-        for (Dog dog : dogList) {
-            //print out dog that is not reserved
-            if (dog.getReserved() == false) {
-                System.out.print("Dog named " + dog.getName() + " is not reserved");
-            }
+            default:
+                System.out.println("Error please try again each word starts with a capital letter");
+                break;
         }
+    }
 
-        //loop through monkey array list
-        for (Monkey monkey : monkeyList) {
-            //print out monkey that is not reserved
-            if (monkey.getReserved() == false) {
-                System.out.print("Monkey named " + monkey.getName() + " is not reserved");
-            }
+    // Print out one dog used in loops
+    public static void printDog(int i, Dog dog) {
+        System.out.println("\nDog number " + i + ":");
+        System.out.print("Name: " + dog.getName() + "\n" +
+                "Status: " + dog.getTrainingStatus() + "\n" +
+                "Acquisition country: " + dog.getAcquisitionLocation() + "\n" +
+                "Reserved: " + dog.getReserved() + "\n");
+    }
+
+    // Print out one monkey ne dog used in loops
+    public static void printMonkey(int i, Monkey monkey) {
+        System.out.println("\nMonkey number " + i + ":");
+        System.out.print("Name: " + monkey.getName() + "\n" +
+                "Status: " + monkey.getTrainingStatus() + "\n" +
+                "Acquisition country: " + monkey.getAcquisitionLocation() + "\n" +
+                "Reserved: " + monkey.getReserved() + "\n");
+    }
+
+
+    /*The printAnimals() method has three different outputs based on the ENUM AcceptedAnimal listType parameter
+          DOG - prints the list of dogs
+          MONKEY - prints the list of monkeys
+          AVAILABLE available - prints a combined list of all animals that are fully trained ("in service") but not reserved*/
+    public static void printAnimals(AcceptedAnimal listType) {
+        int i = 0;
+
+        switch (listType) {
+            case DOG:
+                for (Dog dog : dogList) {
+                    i++;
+                    printDog(i, dog);
+                }
+                break;
+
+            case MONKEY:
+                for (Monkey monkey : monkeyList) {
+                    printMonkey(i, monkey);
+                    i++;
+                }
+                break;
+
+            case AVAILABLE:
+                // Prints out dog's
+                System.out.println("\nDog's not reserved:");
+                for (Dog dog : dogList) {
+                    //print out dog that is not reserved
+                    if (!dog.getReserved()) {
+                        i++;
+                        printDog(i, dog);
+
+                    }
+                }
+                System.out.println("There are " + i + " dogs available to reserve");
+
+                //loop through monkey array list and numbers them
+                i = 0;
+                System.out.println("\nMonkeys not reserved:");
+                for (Monkey monkey : monkeyList) {
+                    //print out monkey that is not reserved
+                    if (!monkey.getReserved()) {
+                        i++;
+                        printMonkey(i, monkey);
+                    }
+                }
+                System.out.println("\nThere are " + i + " monkeys available to reserve");
+                break;
+
+            default:
+                System.out.println("Error in method printAnimals, contact vendor with this error message");
+                break;
         }
     }
 
     public enum AcceptedAnimal {
         DOG,
-        MONKEY
+        MONKEY,
+        AVAILABLE
     }
-
 
 }
 

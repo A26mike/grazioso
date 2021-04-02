@@ -1,13 +1,6 @@
 import java.util.ArrayList;
 
-/*TODO Create a Monkey Class that:
-        Inherits from the RescueAnimal class
-        Includes monkey-specific attributes
-        Includes mutator and accessor methods for each attribute
-        */
-
-public class Monkey extends RescueAnimal{
-
+public class Monkey extends RescueAnimal {
     private String tailLength;
     private String height;
     private String bodyLength;
@@ -25,13 +18,12 @@ public class Monkey extends RescueAnimal{
     private ArrayList<Monkey> eligibleSpecies = new ArrayList<>();
 
     //constructor
-    public Monkey(String name,String species, String gender, String age,
-               String weight, String acquisitionDate, String acquisitionCountry,
-               String trainingStatus, boolean reserved, String inServiceCountry,
-               String bodyLength, String tailLength, String height) {
-        super(name, gender, age,
-                weight,  acquisitionDate,  acquisitionCountry,
-                trainingStatus,  reserved,  inServiceCountry);
+    public Monkey(String name, String species, String gender, String age,
+                  String weight, String acquisitionDate, String acquisitionCountry,
+                  String trainingStatus, boolean reserved, String inServiceCountry,
+                  String bodyLength, String tailLength, String height) {
+        super(name, gender, age, weight, acquisitionDate, acquisitionCountry,
+                trainingStatus, reserved, inServiceCountry);
         setSpecies(species);
         setBodyLength(bodyLength);
         setTailLength(tailLength);
@@ -74,7 +66,7 @@ public class Monkey extends RescueAnimal{
         this.species = species;
     }
 
-    // eligible species getter and setter
+    // eligible species getter and setter place holder not used.
     public ArrayList<Monkey> getEligibleSpecies() {
         return eligibleSpecies;
     }
