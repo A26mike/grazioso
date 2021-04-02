@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class Monkey extends RescueAnimal{
 
-    private Double tailLength;
-    private Double height;
-    private double bodyLength;
+    private String tailLength;
+    private String height;
+    private String bodyLength;
     private String species;
 
 
@@ -25,39 +25,43 @@ public class Monkey extends RescueAnimal{
     private ArrayList<Monkey> eligibleSpecies = new ArrayList<>();
 
     //constructor
-    public Monkey(String name, String species, String gender, String age,
+    public Monkey(String name,String species, String gender, String age,
                String weight, String acquisitionDate, String acquisitionCountry,
-               String trainingStatus, boolean reserved, String inServiceCountry) {
+               String trainingStatus, boolean reserved, String inServiceCountry,
+               String bodyLength, String tailLength, String height) {
         super(name, gender, age,
                 weight,  acquisitionDate,  acquisitionCountry,
                 trainingStatus,  reserved,  inServiceCountry);
         setSpecies(species);
+        setBodyLength(bodyLength);
+        setTailLength(tailLength);
+        setHeight(height);
     }
 
     //tailLength getter and setter.
-    public Double getTailLength() {
+    public String getTailLength() {
         return tailLength;
     }
 
-    public void setTailLength(Double tailLength) {
+    public void setTailLength(String tailLength) {
         this.tailLength = tailLength;
     }
 
     //height getter and setter.
-    public Double getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(Double height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
     //bodyLength getter and setter.
-    public Double getBodyLength() {
+    public String getBodyLength() {
         return bodyLength;
     }
 
-    public void setBodyLength(Double bodyLength) {
+    public void setBodyLength(String bodyLength) {
         this.bodyLength = bodyLength;
     }
 

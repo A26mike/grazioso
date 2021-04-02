@@ -2,7 +2,6 @@ import java.lang.String;
 
 // changed to abstract class
 // cant make an object out of abstract class.
-
 public abstract class RescueAnimal {
 
     // Instance variables
