@@ -3,18 +3,12 @@ import java.util.Scanner;
 
 public class Driver {
     private static ArrayList<Dog> dogList = new ArrayList<Dog>();
-    // Instance variables (if needed)
-
-    public enum AcceptedAnimal{
-        DOG,
-        MONKEY
-    }
-
+    private static ArrayList<Monkey> monkeyList = new ArrayList<Monkey>();
 
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         boolean quitApp = true;
+
         initializeDogList();
         initializeMonkeyList();
 
@@ -23,16 +17,16 @@ public class Driver {
             char userChoice;
             displayMenu();
             userChoice = scanner.next().charAt(0);
+            String clearScanner = scanner.nextLine(); // clearing the scanner input
 
             switch (userChoice) {
                 case 'q':
                     System.out.println("You entered q ");
-
                     quitApp = false;
                     break;
 
                 case '1':
-                    System.out.println("You entered an 1");
+                    System.out.println("\nYou entered an 1\n");
                     intakeNewDog(scanner);
                     break;
 
@@ -61,18 +55,7 @@ public class Driver {
                     break;
             }
 
-
         }
-
-        /*
-         Add a loop that displays the menu, accepts the users input
-         and takes the appropriate action.
-         For the project submission you must also include input validation
-         and appropriate feedback to the user.
-         Hint: create a Scanner and pass it to the necessary
-         methods
-         Hint: Menu options 4, 5, and 6 should all connect to the printAnimals() method.
-        */
 
     }
 
@@ -91,7 +74,6 @@ public class Driver {
         System.out.println("Enter a menu selection");
     }
 
-
     // Adds dogs to a list for testing
     public static void initializeDogList() {
         Dog dog1 = new Dog("Spot", "German Shepherd", "male", "1", "25.6", "05-12-2019", "United States", "intake", false, "United States");
@@ -103,104 +85,82 @@ public class Driver {
         dogList.add(dog3);
     }
 
-
     // Adds monkeys to a list for testing
     //Optional for testing
     public static void initializeMonkeyList() {
         System.out.println("The method initializeMonkeyList needs to be implemented");
     }
 
-
-    // Complete the intakeNewDog method
-    // The input validation to check that the dog is not already in the list
-    // is done for you
-
     public static String getInput(Scanner scanner, String question) {
         System.out.println(question);
         String input = scanner.nextLine();
-        System.out.println("/n");
+        System.out.print("\n");
         return input;
-    };
+    }
 
+    public static void animalAdded(String name, String animalType){
+        System.out.println("\nNew " + animalType + " named " + name + " added successfully\n");
+    }
 
+    // input validation to check that the dog is not already in the list
     //TODO Finish fleshing out if a dog or monkey
-    public static RescueAnimal intakeNewAnimal(Scanner scanner, AcceptedAnimal acceptedAnimal){
-        //shorthand if else statement with ENUM checking if
 
+    public static RescueAnimal intakeNewAnimal(Scanner scanner, AcceptedAnimal acceptedAnimal, String name) {
+        //shorthand if else statement with ENUM,
+
+        //TODO input validation for each input
         String animalType = (acceptedAnimal == AcceptedAnimal.DOG) ? "dog" : "monkey";
-        String name = Driver.getInput(scanner, "What is your " + animalType + "'s name");
-        String gender = Driver.getInput(scanner, "What is your " + animalType + "'s gender\n" +
-                "");
-        String age = Driver.getInput(scanner, "What is your " + animalType + "'s name");
-        String weight = Driver.getInput(scanner, "What is your " + animalType + "'s name");
-        String acquisitionDate = Driver.getInput(scanner, "What is your " + animalType + "'s name");
-        String acquisitionCountry = Driver.getInput(scanner, "What is your " + animalType + "'s name");
-        String trainingStatus = Driver.getInput(scanner, "What is your " + animalType + "'s name");
-        //TODO add get bool
-//        String acquisitionDate = Driver.getInput(scanner, "What is your " + animalType + "'s name");
-        String inServiceCountry = Driver.getInput(scanner, "What is your " + animalType + "'s name");
+        String gender = Driver.getInput(scanner, "What is your " + animalType + "'s gender");
+        String age = Driver.getInput(scanner, "What is your " + animalType + "'s age");
+        String weight = Driver.getInput(scanner, "What is your " + animalType + "'s weight in lbs ");
+        String acquisitionDate = Driver.getInput(scanner, "What date did you acquire the " + animalType + " : enter mm-dd-yyyy\n" +
+                "eg 05-12-2019");
+
+        String acquisitionCountry = Driver.getInput(scanner, "What country did you get the " + animalType );
+
+        // all new new animals start as intake and in the united states and not reserved
+        String trainingStatus = "intake";
+        String inServiceCountry = "United States" ;
+        boolean reserved = false;
 
         //dog
-        if (acceptedAnimal == AcceptedAnimal.DOG){
-            String breed= Driver.getInput(scanner, "What is your " + animalType + "'s breed");
-
-            Dog dog = new Dog(name, breed, gender, age, weight, acquisitionDate, acquisitionCountry, trainingStatus, false, inServiceCountry);
-
-            System.out.println("intakeNewAnimal returned dog");
+        if (acceptedAnimal == AcceptedAnimal.DOG) {
+            String breed = Driver.getInput(scanner, "What is your " + animalType + "'s breed");
+            Dog dog = new Dog(name, breed, gender, age, weight, acquisitionDate, acquisitionCountry, trainingStatus,reserved , inServiceCountry);
+            animalAdded(name,animalType);
             return dog;
-
-
         }
 
         // monkey
-        else if (acceptedAnimal == AcceptedAnimal.MONKEY){
+        else if (acceptedAnimal == AcceptedAnimal.MONKEY) {
             System.out.println("intakeNewAnimal returned Monkey");
-
 
         }
 
         System.out.println("Error in method intakeNewAnimal returned null ");
         return null;
-
     }
 
+
     public static void intakeNewDog(Scanner scanner) {
-        System.out.println("What is the dog's name?");
-        String name = scanner.nextLine(); // clearing the scanner input
-        name = scanner.nextLine();
+        String name = Driver.getInput(scanner, "What is your dogs name");
 
         // check if dog is in list
         for (Dog dog : dogList) {
             if (dog.getName().equalsIgnoreCase(name)) {
                 System.out.println("\n\nThis dog is already in our system\n\n");
                 return; //returns to menu
-            } else {
-                // TODO logic for making new dog
-
-                /*
-                Generic methods
-                What is the same for dog class and monkey
-                Add class overflow
-                Intake class... vs method
-
-                 */
-                AcceptedAnimal acceptedAnimal = AcceptedAnimal.DOG;
-                intakeNewAnimal( scanner,acceptedAnimal);
-
-
-                System.out.println("What is the dog's name?");
-                String breed = scanner.nextLine();
-                System.out.println("/n");
-
-
-
-                // Dog dog = new Dog(name, breed, gender, age, "25.6", "05-12-2019", "United States", "intake", false, "United States");
             }
         }
 
-        // Add the code to instantiate a new dog and add it to the appropriate list
+        //logic for creating a new dog object
+        AcceptedAnimal acceptedAnimal = AcceptedAnimal.DOG;
+        RescueAnimal newDog = intakeNewAnimal(scanner, acceptedAnimal, name);
+        // intakeNewAnimal returns a RescueAnimal object, cast to a Dog object
+        dogList.add((Dog) newDog);
+        // prints out dog object memory location.
+        System.out.println(dogList.toString());
     }
-
 
     // Complete intakeNewMonkey
     //Instantiate and add the new monkey to the appropriate list
@@ -233,5 +193,12 @@ public class Driver {
         System.out.println("The method printAnimals needs to be implemented");
 
     }
+
+    public enum AcceptedAnimal {
+        DOG,
+        MONKEY
+    }
+
+
 }
 
