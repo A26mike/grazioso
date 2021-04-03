@@ -37,7 +37,7 @@ public class Driver {
                     intakeNewMonkey(scanner);
                     break;
 
-                //TODO finish Reserve an animal
+                //Reserve an animal
                 case '3':
                     reserveAnimal(scanner);
                     break;
@@ -182,7 +182,7 @@ public class Driver {
     }
 
     // Complete intakeNewMonkey
-    //Instantiate and add the new monkey to the appropriate list
+    //Instantiate and add the new monkey to the monkey list
     // For the project submission you must also  validate the input
     // to make sure the monkey doesn't already exist and the species type is allowed
     public static void intakeNewMonkey(Scanner scanner) {
@@ -201,29 +201,53 @@ public class Driver {
         monkeyList.add((Monkey) newMonkey);
     }
 
-    // TODO Complete reserveAnimal
+    public static void printReserveError(){
+        System.out.println("There was an error in the selection.\n" +
+                "possible reason:\n" +
+                "Animal name spelled incorrectly.\n" +
+                "No animal's available to check out.\n" +
+                "Please try again.");
+    }
+
+
     //ask user what type of animal they would like to check out
-    //print out a list of type requested animals
-    //TODO have user enter name of animal
+    //print out a list of type available animals
+    //reserves animal based on name and prints out the animal
+    //TODO check if there are no animals to reserve
     public static void reserveAnimal(Scanner scanner) {
-        String animalType;
-        animalType = getInput(scanner, "Enter what type of animal you would like to reserve\n" +
-                "Enter Dog or Monkey");
+        String name;
+        int animalsToCheckout = -1;
+        printAnimals(AcceptedAnimal.AVAILABLE);
 
-        switch (animalType) {
-            case "Dog":
-                System.out.println("Dog selected");
-                printAnimals(AcceptedAnimal.DOG);
-                break;
+        System.out.println();// add a space before question
+        name = getInput(scanner, "Enter an animal name that you would like to reserve or type quit to cancel");
 
-            case "Monkey":
-                System.out.println("Monkey selected");
-                printAnimals(AcceptedAnimal.DOG);
-                break;
+        if (name.equalsIgnoreCase("quit")){
+            System.out.println("You entered quit returning to main menu");
+            return;
+        }
 
-            default:
-                System.out.println("Error please try again each word starts with a capital letter");
+        for (Dog dog : dogList) {
+            if (dog.getName().equalsIgnoreCase(name)) {
+                dog.setReserved(true);
+                printDog(dog);
+                animalsToCheckout = 1;
                 break;
+            }
+        }
+
+        for (Monkey monkey : monkeyList) {
+            if (monkey.getName().equalsIgnoreCase(name)) {
+                monkey.setReserved(true);
+                printMonkey(monkey);
+                animalsToCheckout = 1;
+                break;
+            }
+        }
+
+        // reserve error
+        if (animalsToCheckout != 1){
+            printReserveError();
         }
     }
 
@@ -236,9 +260,24 @@ public class Driver {
                 "Reserved: " + dog.getReserved() + "\n");
     }
 
+    public static void printDog(Dog dog) {
+        System.out.print("Name: " + dog.getName() + "\n" +
+                "Status: " + dog.getTrainingStatus() + "\n" +
+                "Acquisition country: " + dog.getAcquisitionLocation() + "\n" +
+                "Reserved: " + dog.getReserved() + "\n");
+    }
+
+
     // Print out one monkey ne dog used in loops
     public static void printMonkey(int i, Monkey monkey) {
         System.out.println("\nMonkey number " + i + ":");
+        System.out.print("Name: " + monkey.getName() + "\n" +
+                "Status: " + monkey.getTrainingStatus() + "\n" +
+                "Acquisition country: " + monkey.getAcquisitionLocation() + "\n" +
+                "Reserved: " + monkey.getReserved() + "\n");
+    }
+
+    public static void printMonkey(Monkey monkey) {
         System.out.print("Name: " + monkey.getName() + "\n" +
                 "Status: " + monkey.getTrainingStatus() + "\n" +
                 "Acquisition country: " + monkey.getAcquisitionLocation() + "\n" +
@@ -263,8 +302,8 @@ public class Driver {
 
             case MONKEY:
                 for (Monkey monkey : monkeyList) {
-                    printMonkey(i, monkey);
                     i++;
+                    printMonkey(i, monkey);
                 }
                 break;
 
@@ -279,7 +318,7 @@ public class Driver {
 
                     }
                 }
-                System.out.println("There are " + i + " dogs available to reserve");
+                System.out.println("\nThere are " + i + " dogs available to reserve");
 
                 //loop through monkey array list and numbers them
                 i = 0;
