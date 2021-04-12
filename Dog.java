@@ -3,7 +3,11 @@ public class Dog extends RescueAnimal {
 
     // Instance variable
     private String breed;
-    private String animalType = "dog";
+
+
+
+
+
 
 
     // Constructor
@@ -13,9 +17,8 @@ public class Dog extends RescueAnimal {
         super(name, gender, age,
                 weight,  acquisitionDate,  acquisitionCountry,
                  trainingStatus,  reserved,  inServiceCountry);
-
         setBreed(breed);
-
+        setAnimalType("dog");
     }
 
     // Accessor Method

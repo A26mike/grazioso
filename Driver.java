@@ -1,20 +1,33 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Grazioso Salvare program is an application that manages administration of
+ * search and rescue animals
+ *
+ * @since 2021-04-11
+ * @version 0.1.0
+ * @author Grazioso Salvare
+ */
 public class Driver {
     private static final ArrayList<Dog> dogList = new ArrayList<>();
     private static final ArrayList<Monkey> monkeyList = new ArrayList<>();
 
+
+    /**
+     * main method: used as the main operating loop of the program
+     * @param args Unused
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        boolean quitApp = true;
+        boolean quitApp = false;
 
         // for testing only
         initializeDogList();
         initializeMonkeyList();
 
         // Main loop
-        while (quitApp) {
+        while (!quitApp) {
             char userChoice;
             displayMenu();
             userChoice = scanner.next().charAt(0);
@@ -24,7 +37,7 @@ public class Driver {
                 //quit
                 case 'q':
                     System.out.println("\nExiting the program\n");
-                    quitApp = false;
+                    quitApp = true;
                     break;
 
                 // intake new dog
@@ -64,7 +77,9 @@ public class Driver {
         }
     }
 
-    // This method prints the menu options
+    /**
+     *Displays the main menu to the console
+     */
     public static void displayMenu() {
         System.out.println("\n\n");
         System.out.println("\t\t\t\tRescue Animal System Menu");
@@ -79,7 +94,9 @@ public class Driver {
         System.out.println("Enter a menu selection");
     }
 
-    // Adds dogs to a list for testing Optional
+    /**
+     * Adds dogs to a list for testing Optional
+     */
     public static void initializeDogList() {
         Dog dog1 = new Dog("Spot", "German Shepherd", "male", "1", "25.6", "05-12-2019", "United States", "intake", false, "United States");
         Dog dog2 = new Dog("Rex", "Great Dane", "male", "3", "35.2", "02-03-2020", "United States", "Phase I", false, "United States");
@@ -90,13 +107,21 @@ public class Driver {
         dogList.add(dog3);
     }
 
-    // Adds monkeys to a list for testing Optional
+    /**
+     * Adds monkeys to a list for testing Optional
+     */
     public static void initializeMonkeyList() {
         System.out.println("The method initializeMonkeyList needs to be implemented");
     }
 
     // method to for printing to keep the code DRY
     //TODO refactor for <t> generic type method.
+    /**
+     *getInput method gets user input based on a question. This  method to for printing to keep the code DRY.
+     * @param scanner Scanner object passed to method
+     * @param question String passed as an argument displayed to the user
+     * @return string input
+     */
     public static String getInput(Scanner scanner, String question) {
         System.out.println(question);
         String input = scanner.nextLine();
@@ -104,11 +129,25 @@ public class Driver {
         return input;
     }
 
+    /**
+     * This method prints animal type and name added successfully
+     * @param name Name of animal
+     * @param animalType type of rescue animal dog or monkey
+     */
     public static void animalAdded(String name, String animalType) {
         System.out.println("\nNew " + animalType + " named " + name + " added successfully\n");
     }
 
     //
+
+    /**
+     *This method takes creates a initialises a rescue animal object based on type and passes the return Animal object
+     * to intakeNewDog or  or intakeNewMonkey
+     * @param scanner Scanner object passed as scanner
+     * @param acceptedAnimal accepted values ENUM: DOG, MONKEY
+     * @param name Name of animal object
+     * @return monkey or dog class to the method intakeNewDog or intakeNewMonkey based on acceptedAnimal peram
+     */
     public static RescueAnimal intakeNewAnimal(Scanner scanner, AcceptedAnimal acceptedAnimal, String name) {
         //shorthand if else statement with ENUM.
         //TODO input validation for each input after finishing the rest of the program
@@ -164,6 +203,13 @@ public class Driver {
         return null;
     }
 
+    /**
+     *This method is used in the main loop of the program as an option to add a new dog.Gets the the dogs name from the user
+     * and checks if dogs name exists in the dogList. If it does not exist this method sets accepted animal to DOG and passes
+     * the scanner, AcceptedAnimal.DOG and name to intakeNewAnimal method. it takes the return object of Rescue Animal
+     * and casts to to a dog object and adds it to dogList
+     * @param scanner Scanner object
+     */
     public static void intakeNewDog(Scanner scanner) {
         String name = Driver.getInput(scanner, "What is your dogs name");
 
@@ -181,10 +227,17 @@ public class Driver {
         dogList.add((Dog) newDog);
     }
 
-    // Complete intakeNewMonkey
-    //Instantiate and add the new monkey to the monkey list
-    // For the project submission you must also  validate the input
-    // to make sure the monkey doesn't already exist and the species type is allowed
+
+    //TODO Prompts the user for input and validates based on monkey name and
+    //  species type project submission you must also  validate the input
+
+    /**
+     *This method is used in the main loop of the program as an option to add a new Monkey.Gets the the monkey name from the user
+     * and checks if Monkey name exists in the monkeyList. If it does not exist this method sets accepted animal to MONKEY and passes
+     * the scanner, AcceptedAnimal.MONKEY and name to intakeNewAnimal method. it takes the return object of Rescue Animal
+     * and casts to to a monkey object and adds it to monkeyList.
+     * @param scanner Scanner object
+     */
     public static void intakeNewMonkey(Scanner scanner) {
         String name = Driver.getInput(scanner, "What is the monkeys name");
         for (Monkey monkey : monkeyList) {
@@ -192,7 +245,6 @@ public class Driver {
                 System.out.println("\n\nThis monkeys is already in our system\n\n");
                 return; //returns to menu
             }
-
         }
         //logic for creating a new dog object
         AcceptedAnimal acceptedAnimal = AcceptedAnimal.MONKEY;
@@ -201,7 +253,10 @@ public class Driver {
         monkeyList.add((Monkey) newMonkey);
     }
 
-    public static void printReserveError(){
+    /**
+     * This method prints to the console and error message for reserving an rescue animal
+     */
+    public static void printReserveError() {
         System.out.println("There was an error in the selection.\n" +
                 "possible reason:\n" +
                 "Animal name spelled incorrectly.\n" +
@@ -209,11 +264,12 @@ public class Driver {
                 "Please try again.");
     }
 
-
-    //ask user what type of animal they would like to check out
-    //print out a list of type available animals
-    //reserves animal based on name and prints out the animal
     //TODO check if there are no animals to reserve
+    /**
+     * this method prints out all animal's not in a reserve status
+     * Changes animal reserve type reserved based on animal name uses printDog or printMonkey methods.
+     * @param scanner Driver scanner object Animal name
+     */
     public static void reserveAnimal(Scanner scanner) {
         String name;
         int animalsToCheckout = -1;
@@ -222,7 +278,7 @@ public class Driver {
         System.out.println();// add a space before question
         name = getInput(scanner, "Enter an animal name that you would like to reserve or type quit to cancel");
 
-        if (name.equalsIgnoreCase("quit")){
+        if (name.equalsIgnoreCase("quit")) {
             System.out.println("You entered quit returning to main menu");
             return;
         }
@@ -246,12 +302,17 @@ public class Driver {
         }
 
         // reserve error
-        if (animalsToCheckout != 1){
+        if (animalsToCheckout != 1) {
             printReserveError();
         }
     }
 
-    // Print out one dog used in loops
+    /**
+     * This method prints out dogs name, status, acquisition country and its reserve status and counts and displays
+     * number of dogs in the list. This method used for multiple dog objects
+     * @param i iterator for numbers of dogs in a list
+     * @param dog DOG current dog object
+     */
     public static void printDog(int i, Dog dog) {
         System.out.println("\nDog number " + i + ":");
         System.out.print("Name: " + dog.getName() + "\n" +
@@ -260,6 +321,11 @@ public class Driver {
                 "Reserved: " + dog.getReserved() + "\n");
     }
 
+    /**
+     * This method prints out dog name, status, acquisition country and its reserve status.
+     *  This method used for singular dog objects
+      * @param dog DOG single dog object
+     */
     public static void printDog(Dog dog) {
         System.out.print("Name: " + dog.getName() + "\n" +
                 "Status: " + dog.getTrainingStatus() + "\n" +
@@ -267,8 +333,12 @@ public class Driver {
                 "Reserved: " + dog.getReserved() + "\n");
     }
 
-
-    // Print out one monkey ne dog used in loops
+    /**
+     * This method prints out monkey name, status, acquisition country and its reserve status and counts and displays
+     * number of monkeys in the list. This method used for multiple monkey objects
+     * @param i iterator for numbers of monkeys in a list
+     * @param monkey DOG current dog object
+     */
     public static void printMonkey(int i, Monkey monkey) {
         System.out.println("\nMonkey number " + i + ":");
         System.out.print("Name: " + monkey.getName() + "\n" +
@@ -277,6 +347,11 @@ public class Driver {
                 "Reserved: " + monkey.getReserved() + "\n");
     }
 
+    /**
+     * This method prints out monkey name, status, acquisition country and its reserve status.
+     *  This method used for singular monkey objects
+     * @param monkey single monkey object
+     */
     public static void printMonkey(Monkey monkey) {
         System.out.print("Name: " + monkey.getName() + "\n" +
                 "Status: " + monkey.getTrainingStatus() + "\n" +
@@ -284,11 +359,10 @@ public class Driver {
                 "Reserved: " + monkey.getReserved() + "\n");
     }
 
-
-    /*The printAnimals() method has three different outputs based on the ENUM AcceptedAnimal listType parameter
-          DOG - prints the list of dogs
-          MONKEY - prints the list of monkeys
-          AVAILABLE available - prints a combined list of all animals that are fully trained ("in service") but not reserved*/
+    /**
+     * The method has three different outputs based on the ENUM AcceptedAnimal listType parameter
+     * @param listType DOG - prints the list of dogs, MONKEY - prints the list of monkeys AVAILABLE - prints a combined list of all animals that are fully trained ("in service") but not reserved
+     */
     public static void printAnimals(AcceptedAnimal listType) {
         int i = 0;
 
@@ -339,6 +413,9 @@ public class Driver {
         }
     }
 
+    /**
+     * Enum for type of animal and if its available DOG, MONKEY and AVAILABLE
+     */
     public enum AcceptedAnimal {
         DOG,
         MONKEY,

@@ -17,7 +17,20 @@ public abstract class RescueAnimal {
 	private String inServiceCountry;
 
 
-    // Constructor
+
+	/**
+	 * Constructor for abstract class <code>RescueAnimal</code>.
+	 *
+	 * @param name Name of the rescue animal
+	 * @param gender Gender of the rescue animal
+	 * @param age age of the rescue animal
+	 * @param weight Weight of the rescue animal  in lbs.
+	 * @param acquisitionDate Date the animal was acquired.
+	 * @param acquisitionCountry Name of the country the rescue animal was acquired from.
+	 * @param trainingStatus Training Status of the rescue animal.
+	 * @param reserved Reserve status of the rescue animal
+	 * @param inServiceCountry Service country of the rescue animal i.e United States
+	 */
     public RescueAnimal(String name, String gender, String age,
 						String weight, String acquisitionDate, String acquisitionCountry,
 						String trainingStatus, boolean reserved, String inServiceCountry) {
