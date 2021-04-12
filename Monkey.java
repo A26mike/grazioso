@@ -5,7 +5,7 @@ import java.util.ArrayList;
  *
  * @version 0.1.0
  * @since 04-12-2021
- * @author Michael
+ * @author Global Rain
  */
 public class Monkey extends RescueAnimal {
     private String tailLength;
@@ -29,6 +29,15 @@ public class Monkey extends RescueAnimal {
     /**
      * Constructor for <code>Monkey</code> Class
      *
+     * @param name Name of the animal
+     * @param gender Gender of the animal
+     * @param age age of the animal
+     * @param weight Weight of the animal in lbs.
+     * @param acquisitionDate Date the animal was acquired.
+     * @param acquisitionCountry Name of the country the animal was acquired from.
+     * @param trainingStatus Training Status of the animal.
+     * @param reserved Reserve status of the rescue animal
+     * @param inServiceCountry Service country of the rescue animal i.e United States
      * @param bodyLength body length in inches. Passed to the method <code>setHeight</code>
      * @param tailLength Tail length in inches. Passed to the method <code>setTailLength</code>
      * @param height  height of  in inches. Passed to the method  <code>setHeight</code>

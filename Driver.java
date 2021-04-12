@@ -1,4 +1,6 @@
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -13,6 +15,8 @@ public class Driver {
     private static final ArrayList<Dog> dogList = new ArrayList<>();
     private static final ArrayList<Monkey> monkeyList = new ArrayList<>();
 
+    //list storing all countries
+    private static final Locale list[] = DateFormat.getAvailableLocales();
 
     /**
      * main method: used as the main operating loop of the program
@@ -77,6 +81,9 @@ public class Driver {
         }
     }
 
+
+
+
     /**
      *Displays the main menu to the console
      */
@@ -117,7 +124,7 @@ public class Driver {
     // method to for printing to keep the code DRY
     //TODO refactor for <t> generic type method.
     /**
-     *getInput method gets user input based on a question. This  method to for printing to keep the code DRY.
+     *getInput method gets user input based on a question. This  method to for printing to keep the code DRY
      * @param scanner Scanner object passed to method
      * @param question String passed as an argument displayed to the user
      * @return string input
@@ -138,7 +145,6 @@ public class Driver {
         System.out.println("\nNew " + animalType + " named " + name + " added successfully\n");
     }
 
-    //
 
     /**
      *This method takes creates a initialises a rescue animal object based on type and passes the return Animal object
@@ -158,7 +164,9 @@ public class Driver {
         String acquisitionDate = Driver.getInput(scanner, "What date did you acquire the " + animalType +
                 " : enter mm-dd-yyyy\n" +
                 "eg 05-12-2019");
+
         String acquisitionCountry = Driver.getInput(scanner, "What country did you get the " + animalType);
+
         // all new new animals start as intake and in the united states and are not reserved
         String trainingStatus = "intake";
         String inServiceCountry = "United States";
@@ -361,7 +369,10 @@ public class Driver {
 
     /**
      * The method has three different outputs based on the ENUM AcceptedAnimal listType parameter
-     * @param listType DOG - prints the list of dogs, MONKEY - prints the list of monkeys AVAILABLE - prints a combined list of all animals that are fully trained ("in service") but not reserved
+     *
+     * @param listType DOG - prints the list of dogs,
+     *                 MONKEY - prints the list of monkeys AVAILABLE -
+     *                 prints a combined list of all animals that are fully trained ("in service") but not reserved
      */
     public static void printAnimals(AcceptedAnimal listType) {
         int i = 0;
@@ -422,5 +433,32 @@ public class Driver {
         AVAILABLE
     }
 
+    //TODO implement throw
+    public String validateCountry (Scanner scanner, String animalType){
+        String country;
+        boolean countryValidated;
+
+        country = "-1";
+        countryValidated = false;
+
+        while (!countryValidated){
+
+            country = Driver.getInput(scanner, "What country did you get the " + animalType);
+            for (Locale aLocale : list) {
+                if (country.equalsIgnoreCase(String.valueOf(aLocale))){
+                    System.out.print("acceptedCountry is true");
+                    countryValidated = true;
+                }
+                else{
+                    System.out.print("Country is not known please enter again. ");
+                }
+            }
+            System.out.print("acceptedCountry is broken");
+
+        }
+        return country;
+    }
+
 }
+
 
