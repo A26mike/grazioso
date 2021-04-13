@@ -1,5 +1,6 @@
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -16,7 +17,8 @@ public class Driver {
     private static final ArrayList<Monkey> monkeyList = new ArrayList<>();
 
     //list storing all countries
-    private static final Locale list[] = DateFormat.getAvailableLocales();
+    //private static final Locale list[] = DateFormat.getAvailableLocales();
+
 
     /**
      * main method: used as the main operating loop of the program
@@ -26,9 +28,10 @@ public class Driver {
         Scanner scanner = new Scanner(System.in);
         boolean quitApp = false;
 
+
         // for testing only
         initializeDogList();
-        initializeMonkeyList();
+        //initializeMonkeyList();
 
         // Main loop
         while (!quitApp) {
@@ -81,9 +84,6 @@ public class Driver {
         }
     }
 
-
-
-
     /**
      *Displays the main menu to the console
      */
@@ -114,17 +114,17 @@ public class Driver {
         dogList.add(dog3);
     }
 
-    /**
+    /*
      * Adds monkeys to a list for testing Optional
      */
-    public static void initializeMonkeyList() {
+    /*public static void initializeMonkeyList() {
         System.out.println("The method initializeMonkeyList needs to be implemented");
-    }
+    }*/
 
-    // method to for printing to keep the code DRY
+
     //TODO refactor for <t> generic type method.
     /**
-     *getInput method gets user input based on a question. This  method to for printing to keep the code DRY
+     *getInput method gets user input based on a question. This  method to for printing to keep DRY
      * @param scanner Scanner object passed to method
      * @param question String passed as an argument displayed to the user
      * @return string input
@@ -165,7 +165,8 @@ public class Driver {
                 " : enter mm-dd-yyyy\n" +
                 "eg 05-12-2019");
 
-        String acquisitionCountry = Driver.getInput(scanner, "What country did you get the " + animalType);
+        String acquisitionCountry = validateCountry(scanner,animalType);
+
 
         // all new new animals start as intake and in the united states and are not reserved
         String trainingStatus = "intake";
@@ -433,28 +434,65 @@ public class Driver {
         AVAILABLE
     }
 
-    //TODO implement throw
-    public String validateCountry (Scanner scanner, String animalType){
+    /**
+     * This method takes creates an ArrayList of all countries
+     * <p>
+     * It use the list named Local <code>DateFormat.getAvailableLocales()</code> of all available countries codes.
+     * It converts the country codes to country names using <code>.getDisplayCountry()</code> method.
+     * The Locale list is looped through and white space is ignored. The aLocale is added to an arraylist named
+     * countryList. countryList is sorted alphabetically.
+     * <p>
+     *
+     *
+     * @see DateFormat#getAvailableLocales()
+     * @see Locale#getDisplayCountry()
+     * @return  A sorted ArrayList of all countries
+     */
+    public static ArrayList<String> createCountryList(){
+        ArrayList<String> countryList = new ArrayList<>(); //create country list
+        Locale[] list = DateFormat.getAvailableLocales(); // create locale list
+        for (Locale aLocale : list) {
+            if (aLocale.getDisplayCountry().equals("") || countryList.contains(aLocale.getDisplayCountry()) ) {
+                continue;// remove whitespace from list
+            }
+            countryList.add(aLocale.getDisplayCountry());//add country name to array list without
+        }
+        Collections.sort(countryList); // sort Alphabetical
+        return countryList;
+    }
+
+
+    /**
+     * The user is asked to input the country name, it is checked against known countries.
+     *
+     * @param scanner Driver scanner object
+     * @param animalType type dog or cat
+     * @return country string
+     */
+    public static String validateCountry (Scanner scanner, String animalType){
+        ArrayList<String> countryList = createCountryList();
         String country;
         boolean countryValidated;
 
         country = "-1";
         countryValidated = false;
 
+        //validate country
         while (!countryValidated){
-
             country = Driver.getInput(scanner, "What country did you get the " + animalType);
-            for (Locale aLocale : list) {
-                if (country.equalsIgnoreCase(String.valueOf(aLocale))){
-                    System.out.print("acceptedCountry is true");
+            for (String enteredCountry : countryList) {
+                if (country.equalsIgnoreCase(enteredCountry)){
                     countryValidated = true;
-                }
-                else{
-                    System.out.print("Country is not known please enter again. ");
+                    break;
                 }
             }
-            System.out.print("acceptedCountry is broken");
-
+            if(!countryValidated){
+                for (String counter : countryList){
+                    System.out.println(counter);
+                }
+                System.out.print("\nCountry is not found, printing known countries please check spelling\n" +
+                        "in above list or use copy and paste\n\n");
+            }
         }
         return country;
     }
