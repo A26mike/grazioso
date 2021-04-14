@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,13 +10,14 @@ import java.util.Scanner;
  * Grazioso Salvare program is an application that manages administration of
  * search and rescue animals
  *
- * @since 2021-04-11
- * @version 0.1.0
  * @author Grazioso Salvare
+ * @version 0.1.0
+ * @since 2021-04-11
  */
 public class Driver {
     private static final ArrayList<Dog> dogList = new ArrayList<>();
     private static final ArrayList<Monkey> monkeyList = new ArrayList<>();
+
 
     //list storing all countries
     //private static final Locale list[] = DateFormat.getAvailableLocales();
@@ -22,6 +25,7 @@ public class Driver {
 
     /**
      * main method: used as the main operating loop of the program
+     *
      * @param args Unused
      */
     public static void main(String[] args) {
@@ -85,7 +89,7 @@ public class Driver {
     }
 
     /**
-     *Displays the main menu to the console
+     * Displays the main menu to the console
      */
     public static void displayMenu() {
         System.out.println("\n\n");
@@ -114,18 +118,10 @@ public class Driver {
         dogList.add(dog3);
     }
 
-    /*
-     * Adds monkeys to a list for testing Optional
-     */
-    /*public static void initializeMonkeyList() {
-        System.out.println("The method initializeMonkeyList needs to be implemented");
-    }*/
-
-
-    //TODO refactor for <t> generic type method.
     /**
-     *getInput method gets user input based on a question. This  method to for printing to keep DRY
-     * @param scanner Scanner object passed to method
+     * getInput method gets user input based on a question. This  method to for printing to keep DRY
+     *
+     * @param scanner  Scanner object passed to method
      * @param question String passed as an argument displayed to the user
      * @return string input
      */
@@ -138,7 +134,8 @@ public class Driver {
 
     /**
      * This method prints animal type and name added successfully
-     * @param name Name of animal
+     *
+     * @param name       Name of animal
      * @param animalType type of rescue animal dog or monkey
      */
     public static void animalAdded(String name, String animalType) {
@@ -147,35 +144,38 @@ public class Driver {
 
 
     /**
-     *This method takes creates a initialises a rescue animal object based on type and passes the return Animal object
+     * This method takes creates a initialises a rescue animal object based on type and passes the return Animal object
      * to intakeNewDog or  or intakeNewMonkey
-     * @param scanner Scanner object passed as scanner
+     *
+     * @param scanner        Scanner object passed as scanner
      * @param acceptedAnimal accepted values ENUM: DOG, MONKEY
-     * @param name Name of animal object
+     * @param name           Name of animal object
      * @return monkey or dog class to the method intakeNewDog or intakeNewMonkey based on acceptedAnimal peram
      */
     public static RescueAnimal intakeNewAnimal(Scanner scanner, AcceptedAnimal acceptedAnimal, String name) {
         //shorthand if else statement with ENUM.
-        //TODO input validation for each input after finishing the rest of the program
         String animalType = (acceptedAnimal == AcceptedAnimal.DOG) ? "dog" : "monkey";
         String gender = Driver.getInput(scanner, "What is your " + animalType + "'s gender");
+
+        //TODO validate age 0-30 to numbers 0 or above
         String age = Driver.getInput(scanner, "What is your " + animalType + "'s age");
         String weight = Driver.getInput(scanner, "What is your " + animalType + "'s weight in lbs ");
-        String acquisitionDate = Driver.getInput(scanner, "What date did you acquire the " + animalType +
-                " : enter mm-dd-yyyy\n" +
-                "eg 05-12-2019");
 
-        String acquisitionCountry = validateCountry(scanner,animalType);
-
-
+        String acquisitionDate = validatesDate(scanner, animalType);
+        String acquisitionCountry = validateCountry(scanner, animalType);
         // all new new animals start as intake and in the united states and are not reserved
-        String trainingStatus = "intake";
+        String trainingStatus = "Intake";
         String inServiceCountry = "United States";
         boolean reserved = false;
 
         //add dog to dog list + par
         if (acceptedAnimal == AcceptedAnimal.DOG) {
-            String breed = Driver.getInput(scanner, "What is your " + animalType + "'s breed");
+            String breed = null;
+            try {
+                breed = validateDogBreed(scanner, animalType);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
             Dog dog = new Dog(name, breed, gender, age,
                     weight, acquisitionDate, acquisitionCountry,
                     trainingStatus, reserved, inServiceCountry);
@@ -213,14 +213,15 @@ public class Driver {
     }
 
     /**
-     *This method is used in the main loop of the program as an option to add a new dog.Gets the the dogs name from the user
+     * This method is used in the main loop of the program as an option to add a new dog.Gets the the dogs name from the user
      * and checks if dogs name exists in the dogList. If it does not exist this method sets accepted animal to DOG and passes
      * the scanner, AcceptedAnimal.DOG and name to intakeNewAnimal method. it takes the return object of Rescue Animal
      * and casts to to a dog object and adds it to dogList
+     *
      * @param scanner Scanner object
      */
     public static void intakeNewDog(Scanner scanner) {
-        String name = Driver.getInput(scanner, "What is your dogs name");
+        String name = Driver.getInput(scanner, "\nWhat is your dogs name");
 
         // check if dog is in list
         for (Dog dog : dogList) {
@@ -231,7 +232,8 @@ public class Driver {
         }
         //logic for creating a new dog object
         AcceptedAnimal acceptedAnimal = AcceptedAnimal.DOG;
-        RescueAnimal newDog = intakeNewAnimal(scanner, acceptedAnimal, name);
+        RescueAnimal newDog;
+        newDog = intakeNewAnimal(scanner, acceptedAnimal, name);
         // intakeNewAnimal returns a RescueAnimal object, cast to a Dog object
         dogList.add((Dog) newDog);
     }
@@ -241,14 +243,15 @@ public class Driver {
     //  species type project submission you must also  validate the input
 
     /**
-     *This method is used in the main loop of the program as an option to add a new Monkey.Gets the the monkey name from the user
+     * This method is used in the main loop of the program as an option to add a new Monkey.Gets the the monkey name from the user
      * and checks if Monkey name exists in the monkeyList. If it does not exist this method sets accepted animal to MONKEY and passes
      * the scanner, AcceptedAnimal.MONKEY and name to intakeNewAnimal method. it takes the return object of Rescue Animal
      * and casts to to a monkey object and adds it to monkeyList.
+     *
      * @param scanner Scanner object
      */
     public static void intakeNewMonkey(Scanner scanner) {
-        String name = Driver.getInput(scanner, "What is the monkeys name");
+        String name = Driver.getInput(scanner, "\nWhat is the monkeys name");
         for (Monkey monkey : monkeyList) {
             if (monkey.getName().equalsIgnoreCase(name)) {
                 System.out.println("\n\nThis monkeys is already in our system\n\n");
@@ -257,7 +260,8 @@ public class Driver {
         }
         //logic for creating a new dog object
         AcceptedAnimal acceptedAnimal = AcceptedAnimal.MONKEY;
-        RescueAnimal newMonkey = intakeNewAnimal(scanner, acceptedAnimal, name);
+        RescueAnimal newMonkey;
+        newMonkey = intakeNewAnimal(scanner, acceptedAnimal, name);
         // intakeNewAnimal returns a RescueAnimal object, cast to a monkey object
         monkeyList.add((Monkey) newMonkey);
     }
@@ -273,10 +277,12 @@ public class Driver {
                 "Please try again.");
     }
 
-    //TODO check if there are no animals to reserve
+
+
     /**
      * this method prints out all animal's not in a reserve status
      * Changes animal reserve type reserved based on animal name uses printDog or printMonkey methods.
+     *
      * @param scanner Driver scanner object Animal name
      */
     public static void reserveAnimal(Scanner scanner) {
@@ -319,7 +325,8 @@ public class Driver {
     /**
      * This method prints out dogs name, status, acquisition country and its reserve status and counts and displays
      * number of dogs in the list. This method used for multiple dog objects
-     * @param i iterator for numbers of dogs in a list
+     *
+     * @param i   iterator for numbers of dogs in a list
      * @param dog DOG current dog object
      */
     public static void printDog(int i, Dog dog) {
@@ -332,8 +339,9 @@ public class Driver {
 
     /**
      * This method prints out dog name, status, acquisition country and its reserve status.
-     *  This method used for singular dog objects
-      * @param dog DOG single dog object
+     * This method used for singular dog objects
+     *
+     * @param dog DOG single dog object
      */
     public static void printDog(Dog dog) {
         System.out.print("Name: " + dog.getName() + "\n" +
@@ -345,7 +353,8 @@ public class Driver {
     /**
      * This method prints out monkey name, status, acquisition country and its reserve status and counts and displays
      * number of monkeys in the list. This method used for multiple monkey objects
-     * @param i iterator for numbers of monkeys in a list
+     *
+     * @param i      iterator for numbers of monkeys in a list
      * @param monkey DOG current dog object
      */
     public static void printMonkey(int i, Monkey monkey) {
@@ -358,7 +367,8 @@ public class Driver {
 
     /**
      * This method prints out monkey name, status, acquisition country and its reserve status.
-     *  This method used for singular monkey objects
+     * This method used for singular monkey objects
+     *
      * @param monkey single monkey object
      */
     public static void printMonkey(Monkey monkey) {
@@ -426,15 +436,6 @@ public class Driver {
     }
 
     /**
-     * Enum for type of animal and if its available DOG, MONKEY and AVAILABLE
-     */
-    public enum AcceptedAnimal {
-        DOG,
-        MONKEY,
-        AVAILABLE
-    }
-
-    /**
      * This method takes creates an ArrayList of all countries
      * <p>
      * It use the list named Local <code>DateFormat.getAvailableLocales()</code> of all available countries codes.
@@ -443,16 +444,15 @@ public class Driver {
      * countryList. countryList is sorted alphabetically.
      * <p>
      *
-     *
+     * @return A sorted ArrayList of all countries
      * @see DateFormat#getAvailableLocales()
      * @see Locale#getDisplayCountry()
-     * @return  A sorted ArrayList of all countries
      */
-    public static ArrayList<String> createCountryList(){
+    public static ArrayList<String> createCountryList() {
         ArrayList<String> countryList = new ArrayList<>(); //create country list
         Locale[] list = DateFormat.getAvailableLocales(); // create locale list
         for (Locale aLocale : list) {
-            if (aLocale.getDisplayCountry().equals("") || countryList.contains(aLocale.getDisplayCountry()) ) {
+            if (aLocale.getDisplayCountry().equals("") || countryList.contains(aLocale.getDisplayCountry())) {
                 continue;// remove whitespace from list
             }
             countryList.add(aLocale.getDisplayCountry());//add country name to array list without
@@ -461,15 +461,14 @@ public class Driver {
         return countryList;
     }
 
-
     /**
      * The user is asked to input the country name, it is checked against known countries.
      *
-     * @param scanner Driver scanner object
+     * @param scanner    Driver scanner object
      * @param animalType type dog or cat
      * @return country string
      */
-    public static String validateCountry (Scanner scanner, String animalType){
+    public static String validateCountry(Scanner scanner, String animalType) {
         ArrayList<String> countryList = createCountryList();
         String country;
         boolean countryValidated;
@@ -478,16 +477,16 @@ public class Driver {
         countryValidated = false;
 
         //validate country
-        while (!countryValidated){
+        while (!countryValidated) {
             country = Driver.getInput(scanner, "What country did you get the " + animalType);
             for (String enteredCountry : countryList) {
-                if (country.equalsIgnoreCase(enteredCountry)){
+                if (country.equalsIgnoreCase(enteredCountry)) {
                     countryValidated = true;
                     break;
                 }
             }
-            if(!countryValidated){
-                for (String counter : countryList){
+            if (!countryValidated) {
+                for (String counter : countryList) {
                     System.out.println(counter);
                 }
                 System.out.print("\nCountry is not found, printing known countries please check spelling\n" +
@@ -495,6 +494,94 @@ public class Driver {
             }
         }
         return country;
+    }
+
+    /**
+     * This method gets user input for date
+     *
+     * @param scanner    Scanner object
+     * @param animalType Dog or Monkey
+     * @return validated string date in format  mm-dd-yyyy
+     */
+    public static String validatesDate(Scanner scanner, String animalType) {
+        String date;
+        String dateRegex = "^(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|" +
+                "(02/(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))-[0-9]{4}$";
+
+        while (true) { // the break removes the need for date
+            date = Driver.getInput(scanner, "What date did you acquire the " + animalType +
+                    " : enter mm-dd-yyyy\n" +
+                    "eg 05-12-2019");
+            if (date.matches(dateRegex)) {
+                break;
+            } else {
+                System.out.println("Inputted Date format is incorrect try again\n");
+            }
+        }
+        return date;
+    }
+
+    /**
+     * This method creates an a list of dog breeds based on a file from wiki.
+     *
+     * @return Arraylist dogBreeds
+     * @throws FileNotFoundException if file not found
+     */
+    public static ArrayList<String> createDogBreedList() throws FileNotFoundException {
+        Scanner fileReader = new Scanner(new File("dogList.txt"));
+        ArrayList<String> dogBreeds = new ArrayList<>(); //create country list
+
+        // read until end of file (EOF)
+        while (fileReader.hasNextLine()) {
+            dogBreeds.add(fileReader.nextLine());
+        }
+        fileReader.close();
+        return dogBreeds;
+    }
+
+    /**
+     * This function validates the breed of dog.
+     *
+     * @param scanner    scanner object
+     * @param animalType dog or monkey
+     * @return validated sting breed
+     * @throws FileNotFoundException if dogList.txt is not found
+     */
+    public static String validateDogBreed(Scanner scanner, String animalType) throws FileNotFoundException {
+        ArrayList<String> dogBreed = createDogBreedList();
+        String breed;
+        boolean breedValidated;
+
+        breed = "-1";
+        breedValidated = false;
+
+        //breed
+        while (!breedValidated) {
+            breed = Driver.getInput(scanner, "What type of breed is the " + animalType);
+            for (String enteredBreed : dogBreed) {
+                if (breed.equalsIgnoreCase(enteredBreed)) {
+                    breedValidated = true;
+                    break;
+                }
+            }
+            if (!breedValidated) {
+                for (String counter : dogBreed) {
+                    System.out.println(counter);
+                }
+                System.out.print("\nDog breed is not found, printing breeds of dogs please check spelling\n" +
+                        "in above list or use copy and paste\n\n");
+            }
+        }
+        return breed;
+    }
+
+    /**
+     * Enum for type of animal and if its available DOG, MONKEY and AVAILABLE
+     */
+    public enum AcceptedAnimal {
+        DOG,
+        MONKEY,
+        AVAILABLE
     }
 
 }
