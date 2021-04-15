@@ -261,8 +261,6 @@ public class Driver {
                 "Please try again.");
     }
 
-
-
     /**
      * this method prints out all animal's not in a reserve status
      * Changes animal reserve type reserved based on animal name uses printDog or printMonkey methods.
