@@ -156,11 +156,8 @@ public class Driver {
         //shorthand if else statement with ENUM.
         String animalType = (acceptedAnimal == AcceptedAnimal.DOG) ? "dog" : "monkey";
         String gender = Driver.getInput(scanner, "What is your " + animalType + "'s gender");
-
-        //TODO validate age 0-30 to numbers 0 or above
         String age = Driver.getInput(scanner, "What is your " + animalType + "'s age");
         String weight = Driver.getInput(scanner, "What is your " + animalType + "'s weight in lbs ");
-
         String acquisitionDate = validatesDate(scanner, animalType);
         String acquisitionCountry = validateCountry(scanner, animalType);
         // all new new animals start as intake and in the united states and are not reserved
@@ -185,16 +182,7 @@ public class Driver {
 
         // monkey
         else if (acceptedAnimal == AcceptedAnimal.MONKEY) {
-            //parameters unique to monkey
-            String species = Driver.getInput(scanner, "Acceptable species of " + animalType + " for training are:\n" +
-                    "Capuchin\n" +
-                    "Guenon\n" +
-                    "Macaque\n" +
-                    "Marmoset\n" +
-                    "Squirrel monkey\n" +
-                    "Tamarin\n\n" +
-                    "Please enter an acceptable species of " + animalType);
-
+            String species = validateMonkeyBreed(scanner,animalType);
             String bodyLength = Driver.getInput(scanner, "Enter  " + animalType + " body length in inches");
             String tailLength = Driver.getInput(scanner, "Enter  " + animalType + " tail length in inches");
             String height = Driver.getInput(scanner, "Enter  " + animalType + " height in inches");
@@ -237,10 +225,6 @@ public class Driver {
         // intakeNewAnimal returns a RescueAnimal object, cast to a Dog object
         dogList.add((Dog) newDog);
     }
-
-
-    //TODO Prompts the user for input and validates based on monkey name and
-    //  species type project submission you must also  validate the input
 
     /**
      * This method is used in the main loop of the program as an option to add a new Monkey.Gets the the monkey name from the user
@@ -504,17 +488,15 @@ public class Driver {
      * @return validated string date in format  mm-dd-yyyy
      */
     public static String validatesDate(Scanner scanner, String animalType) {
-        String date;
-        String dateRegex = "^(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|" +
-                "(02/(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))-[0-9]{4}$";
+        String date = "-1";
+        String dateRegex = "^(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02/(0[1-9]|[1-2][0-9]))|" +
+                "((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))-[0-9]{4}$";
 
-        while (true) { // the break removes the need for date
+        while (!date.matches(dateRegex)) { // the break removes the need for date
             date = Driver.getInput(scanner, "What date did you acquire the " + animalType +
                     " : enter mm-dd-yyyy\n" +
                     "eg 05-12-2019");
-            if (date.matches(dateRegex)) {
-                break;
-            } else {
+            if (!date.matches(dateRegex)) {
                 System.out.println("Inputted Date format is incorrect try again\n");
             }
         }
@@ -549,11 +531,8 @@ public class Driver {
      */
     public static String validateDogBreed(Scanner scanner, String animalType) throws FileNotFoundException {
         ArrayList<String> dogBreed = createDogBreedList();
-        String breed;
-        boolean breedValidated;
-
-        breed = "-1";
-        breedValidated = false;
+        String breed= "-1";
+        boolean breedValidated = false;
 
         //breed
         while (!breedValidated) {
@@ -565,14 +544,43 @@ public class Driver {
                 }
             }
             if (!breedValidated) {
-                for (String counter : dogBreed) {
-                    System.out.println(counter);
+                for (String dog : dogBreed) {
+                    System.out.println(dog);
                 }
                 System.out.print("\nDog breed is not found, printing breeds of dogs please check spelling\n" +
                         "in above list or use copy and paste\n\n");
             }
         }
         return breed;
+    }
+
+    public static String validateMonkeyBreed(Scanner scanner, String animalType){
+       String[] monkeyArr ={"Capuchin","Guenon","Macaque","Marmoset","Tamarin"};
+        boolean breedValidated = false;
+        String monkeyBreed= null;
+
+       while(!breedValidated){
+            monkeyBreed = Driver.getInput(scanner, "Acceptable species of " + animalType + " for training are:\n" +
+                   "Capuchin\n" +
+                   "Guenon\n" +
+                   "Macaque\n" +
+                   "Marmoset\n" +
+                   "Squirrel monkey\n" +
+                   "Tamarin\n\n" +
+                   "Please enter an acceptable species of " + animalType);
+
+           for (String monkey:monkeyArr){
+               if(monkeyBreed.equalsIgnoreCase(monkey)){
+                   breedValidated = true;
+                   break;
+               }
+           }
+
+           if(!breedValidated){
+               System.out.println("Incorrect species of " + animalType + " Please try again. \n");
+           }
+       }
+        return monkeyBreed;
     }
 
     /**
@@ -583,7 +591,6 @@ public class Driver {
         MONKEY,
         AVAILABLE
     }
-
 }
 
 
